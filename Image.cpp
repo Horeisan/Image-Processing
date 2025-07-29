@@ -54,13 +54,18 @@ Image& Image::operator=(const Image &other) {   //assignment operator
     return *this;
 }
 
-Image :: ~Image() {  // Destructor
-    for (int i = 0; i < m_width; i++) {
+Image :: ~Image() {
+    // Destructor
+    for (int i = 0; i < m_height; i++) {
         delete[] m_data[i];
     }
-        delete[] m_data;
+    delete[] m_data;
+    m_data = nullptr;
 
+    m_width = 0;
+    m_height = 0;
 }
+
 Image Image::operator+(const Image &i) {    // Adding pixels
     Image new_image;
     if (this->m_height == i.m_height && new_image.m_width == this->m_width + i.m_width) {
@@ -114,9 +119,9 @@ std::ostream& operator<<(std::ostream& os, const Image& dt) {
     os<<"Height = " << dt.m_height <<"Width = "<<dt.m_width<<"\n";
     for ( int i = 0; i < dt.m_height; i++) {
         for ( int j = 0; j < dt.m_width; j++) {
-            os << static_cast<unsigned char>(dt.m_data[i][j])  << " ";
+            os<< static_cast<unsigned char>(dt.m_data[i][j]) << " ";
         }
-        os << "\n";
+        os<<"\n";
     }
     return os;
 }
@@ -212,7 +217,7 @@ std::istream& operator>>(std::istream& is, Image& dt) {
     for (unsigned int i = 0; i < height; i++) {
         for (unsigned int j = 0; j < width; j++) {
             int val;
-            is >> val;
+            is >>val;
             dt.m_data[i][j] = static_cast<unsigned char>(val);
         }
     }
@@ -258,15 +263,15 @@ bool Image::save(std::string imagePath) const {
     if (!os.is_open())
         return false;
 
-    os << "P2\n";
+    os <<"P2\n";
     os << m_width << " " << m_height << "\n";
-    os << "255\n";
+    os <<"255\n";
 
     for (unsigned int i = 0; i < m_height; i++) {
         for (unsigned int j = 0; j < m_width; j++) {
-            os << static_cast<int>(m_data[i][j]) << " ";
+            os << static_cast<int>(m_data[i][j])<< " ";
         }
-        os << "\n";
+        os <<"\n";
     }
 
     return true;
