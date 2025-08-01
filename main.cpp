@@ -5,7 +5,7 @@ using namespace std;
 int main() {
     Image src;
     if (src.load("balloons_ascii.pgm") != true) {
-        cout<<"The image could'n be opened";
+        cout<<"The image couldn't be opened";
 
     }
 
@@ -17,6 +17,6 @@ int main() {
         cout<< "Error saving the image!" <<endl;
 
     }
-
+    cout<<"Image opened";
     return 0;
 }

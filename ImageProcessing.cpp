@@ -10,7 +10,7 @@ BrightnessContrast::BrightnessContrast(float alpha, float beta) {
     this->beta = beta;
 }
 
-void BrightnessContrast::process(Image &src, Image &dst) {
+void BrightnessContrast::process(Image &src, Image &dst) {   // we applying the formula for the brightness
     if (src.height() == dst.height() && src.width() == dst.width()) {
         unsigned char pixel;
         for (int i = 0; i < src.height(); i++) {
@@ -32,7 +32,7 @@ GammaCorrection::GammaCorrection() {
 GammaCorrection::GammaCorrection(float gamma) {
     this -> gamma = gamma;
 }
-void GammaCorrection:: process( Image &src, Image &dst) {           // We apply the formula for GammaCorrection
+void GammaCorrection:: process( Image &src, Image &dst) {           // We applying the formula the formula for GammaCorrection
     if (src.height() == dst.height() && src.width() == dst.width()) {
         for (int i = 0; i < src.height(); i++) {
             for (int j = 0 ; j < src.width(); j++) {

@@ -115,7 +115,7 @@ bool Image::isEmpty() const { // Checking if it's empty
 
 }
 
-std::ostream& operator<<(std::ostream& os, const Image& dt) {
+std::ostream& operator<<(std::ostream& os, const Image& dt) { //overloading << operator
     os<<"Height = " << dt.m_height <<"Width = "<<dt.m_width<<"\n";
     for ( int i = 0; i < dt.m_height; i++) {
         for ( int j = 0; j < dt.m_width; j++) {
@@ -142,7 +142,7 @@ void Image::fill(unsigned char val) {
             m_data[i][j] = val;
 }
 
-Image Image::ones(unsigned int w, unsigned int h) {
+Image Image::ones(unsigned int w, unsigned int h) { //you can create black img
     Image img(w, h);
     img.fill(255);
     return img;
@@ -189,7 +189,7 @@ bool Image::getROI(Image& roiImg, Rectangle roiRect) {
 
     return true;
 }
-
+//getting cropped image
 bool Image::getROI(Image& roiImg, unsigned int x, unsigned int y, unsigned int width, unsigned int height) {
     Rectangle roiRect(Point(x, y), Size(width, height));
     return getROI(roiImg, roiRect);
@@ -238,7 +238,6 @@ bool Image::load(std::string imagePath) {
     unsigned int width, height, maxVal;
     is >> width >> height >> maxVal;
 
-    // Eliberăm dacă imaginea curentă era deja alocată
     release();
 
     m_width = width;
