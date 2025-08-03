@@ -1,9 +1,10 @@
 #pragma once
 #include "Image.h"
+#include <vector>
 
 class ImageProcessing {
 public:
-    virtual void process( Image& src, Image& dst) = 0;
+    virtual void process( Image& src, Image& dst);
     virtual ~ImageProcessing() = default;
 };
 
@@ -23,4 +24,17 @@ public:
     GammaCorrection();
     GammaCorrection(float gamma);
     void process( Image &src, Image &dst) override;
+};
+
+class ImageConvolution : public ImageProcessing {
+private:
+    std::vector<std::vector<int>> BlueKernel;
+public:
+    ImageConvolution();
+    ImageConvolution(std::vector<std::vector<int>> BlueKernel);
+    void blur( Image& src, Image& dst, const std::vector<std::vector<int>> &BlueKernel);
+    void gaussian_blur( Image& src, Image& dst, const std::vector<std::vector<int>> &BlueKernel);
+
+
+
 };

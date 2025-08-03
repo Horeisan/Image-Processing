@@ -1,5 +1,8 @@
 #include "ImageProcessing.h"
 #include <cmath>
+void ImageProcessing::process(Image& src, Image& dst) {
+
+}
 
 BrightnessContrast::BrightnessContrast() {
     this->alpha = 1;
@@ -47,3 +50,68 @@ void GammaCorrection:: process( Image &src, Image &dst) {           // We applyi
     }
 }
 
+ImageConvolution::ImageConvolution() {
+    this->BlueKernel= {{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
+}
+ImageConvolution::ImageConvolution(std::vector<std::vector<int>> BlueKernel) {
+
+        this->BlueKernel = BlueKernel;
+
+}
+
+void ImageConvolution::blur(Image &src, Image &dst, const std::vector<std::vector<int>> &BlueKernel) { //we work only with 3*3 matrices
+        Image* padding = new Image(src.width()+2,src.height()+2);
+        for (int i = 0; i < src.height();i++) {
+            for (int j= 0; j < src.width();j++){
+                padding->at(j+1,i+1) = src.at(j,i);
+            }
+        }
+    for (int i = 1; i < padding->height()-1; i++) {
+        for (int j= 1; j < padding->width()-1; j++) {
+            int final_value = 0;
+
+            for (int krows = 0; krows<3; krows++) {
+                for (int kcolumns = 0; kcolumns<3; kcolumns++) {
+                    int pi = i + krows -1;
+                    int pj = j + kcolumns -1;
+
+                    final_value += padding->at(pj, pi) * BlueKernel[krows][kcolumns];
+                }
+            }
+       final_value/=9.0;
+       if (final_value < 0) final_value = 0;
+       if (final_value > 255) final_value = 255;
+
+       dst.at(j - 1, i - 1) = static_cast<unsigned char>(final_value);
+        }
+    }
+    delete padding;
+}
+void ImageConvolution::gaussian_blur(Image &src, Image &dst, const std::vector<std::vector<int>> &BlueKernel) { //we work only with 3*3 matrices
+    Image* padding = new Image(src.width()+2,src.height()+2);
+    for (int i = 0; i < src.height();i++) {
+        for (int j= 0; j < src.width();j++){
+            padding->at(j+1,i+1) = src.at(j,i);
+        }
+    }
+    for (int i = 1; i < padding->height()-1; i++) {
+        for (int j= 1; j < padding->width()-1; j++) {
+            int final_value = 0;
+
+            for (int krows = 0; krows<3; krows++) {
+                for (int kcolumns = 0; kcolumns<3; kcolumns++) {
+                    int pi = i + krows -1;
+                    int pj = j + kcolumns -1;
+
+                    final_value += padding->at(pj, pi) * BlueKernel[krows][kcolumns];
+                }
+            }
+            final_value/=16.0;
+            if (final_value < 0) final_value = 0;
+            if (final_value > 255) final_value = 255;
+
+            dst.at(j - 1, i - 1) = static_cast<unsigned char>(final_value);
+        }
+    }
+    delete padding;
+}
